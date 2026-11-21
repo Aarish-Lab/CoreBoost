@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.7.11",
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.coreboost.mixin",
+  "refmap": "mixins.coreboost.refmap.json",
+  "mixins": [],
+  "client": [
+    "RenderManagerMixin",
+    "TileEntityRendererDispatcherMixin",
+    "EffectRendererMixin",
+    "FontRendererMixin"
+  ],
+  "injectors": { "defaultRequire": 1 }
+}
+

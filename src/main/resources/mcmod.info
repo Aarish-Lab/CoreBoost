@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "coreboost",
+    "name": "CoreBoost",
+    "description": "Client-side CPU and rendering optimizations for Minecraft 1.8.9.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["CoreBoost contributors"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
+
