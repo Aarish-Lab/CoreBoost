@@ -202,6 +202,7 @@ public final class ClientRuntime {
             }
             entityCursor = (start + visited) % entitySize;
         }
+
         List<TileEntity> tiles = world.loadedTileEntityList;
         int tileSize = tiles.size();
         int tileUsed = 0;
@@ -219,6 +220,7 @@ public final class ClientRuntime {
             }
             tileCursor = (start + visited) % tileSize;
         }
+
         if (jobs.isEmpty()) { SCAN_ACTIVE.set(false); return; }
 
         final AtomicInteger remaining = new AtomicInteger(jobs.size());
@@ -277,8 +279,14 @@ public final class ClientRuntime {
     private static int floor(double d) { int i = (int)d; return d < i ? i - 1 : i; }
 
     private static final class Decision {
-        final long tick, generation; final boolean hidden;
-        Decision(long tick, long generation, boolean hidden) { this.tick = tick; this.generation = generation; this.hidden = hidden; }
+        final long tick, generation;
+        final boolean hidden;
+
+        Decision(long tick, long generation, boolean hidden) {
+            this.tick = tick;
+            this.generation = generation;
+            this.hidden = hidden;
+        }
     }
 
     private static final class Job {
@@ -291,9 +299,22 @@ public final class ClientRuntime {
 
         Job(boolean tile, int id, long key, long tick, long generation, double ex, double ey, double ez,
             double tx, double ty, double tz, double lx, double ly, double lz, double[] boxes, int count) {
-            this.tile = tile; entityId = id; tileKey = key; this.tick = tick; this.generation = generation;
-            this.ex = ex; this.ey = ey; this.ez = ez; this.tx = tx; this.ty = ty; this.tz = tz;
-            this.lx = lx; this.ly = ly; this.lz = lz; this.boxes = boxes; this.count = count;
+            this.tile = tile;
+            entityId = id;
+            tileKey = key;
+            this.tick = tick;
+            this.generation = generation;
+            this.ex = ex;
+            this.ey = ey;
+            this.ez = ez;
+            this.tx = tx;
+            this.ty = ty;
+            this.tz = tz;
+            this.lx = lx;
+            this.ly = ly;
+            this.lz = lz;
+            this.boxes = boxes;
+            this.count = count;
         }
 
         boolean behind() {
@@ -306,8 +327,8 @@ public final class ClientRuntime {
             double dx = tx - ex, dy = ty - ey, dz = tz - ez;
             for (int i = 0; i < count; i++) {
                 int o = i * 6;
-                if (intersects(ex, ey, ez, dx, dy, dz, boxes[o], boxes[o+1], boxes[o+2],
-                    boxes[o+3], boxes[o+4], boxes[o+5])) return true;
+                if (intersects(ex, ey, ez, dx, dy, dz, boxes[o], boxes[o + 1], boxes[o + 2],
+                    boxes[o + 3], boxes[o + 4], boxes[o + 5])) return true;
             }
             return false;
         }
@@ -315,12 +336,33 @@ public final class ClientRuntime {
         private static boolean intersects(double ox, double oy, double oz, double dx, double dy, double dz,
                                           double ax, double ay, double az, double bx, double by, double bz) {
             double x1, x2, y1, y2, z1, z2;
-            if (Math.abs(dx) < 1e-9) { if (ox < ax || ox > bx) return false; x1 = -Double.MAX_VALUE; x2 = Double.MAX_VALUE; }
-            else { x1 = (ax-ox)/dx; x2 = (bx-ox)/dx; if (x1>x2) { double s=x1; x1=x2; x2=s; } }
-            if (Math.abs(dy) < 1e-9) { if (oy < ay || oy > by) return false; y1 = -Double.MAX_VALUE; y2 = Double.MAX_VALUE; }
-            else { y1 = (ay-oy)/dy; y2 = (by-oy)/dy; if (y1>y2) { double s=y1; y1=y2; y2=s; } }
-            if (Math.abs(dz) < 1e-9) { if (oz < az || oz > bz) return false; z1 = -Double.MAX_VALUE; z2 = Double.MAX_VALUE; }
-            else { z1 = (az-oz)/dz; z2 = (bz-oz)/dz; if (z1>z2) { double s=z1; z1=z2; z2=s; } }
+            if (Math.abs(dx) < 1e-9) {
+                if (ox < ax || ox > bx) return false;
+                x1 = -Double.MAX_VALUE;
+                x2 = Double.MAX_VALUE;
+            } else {
+                x1 = (ax - ox) / dx;
+                x2 = (bx - ox) / dx;
+                if (x1 > x2) { double s = x1; x1 = x2; x2 = s; }
+            }
+            if (Math.abs(dy) < 1e-9) {
+                if (oy < ay || oy > by) return false;
+                y1 = -Double.MAX_VALUE;
+                y2 = Double.MAX_VALUE;
+            } else {
+                y1 = (ay - oy) / dy;
+                y2 = (by - oy) / dy;
+                if (y1 > y2) { double s = y1; y1 = y2; y2 = s; }
+            }
+            if (Math.abs(dz) < 1e-9) {
+                if (oz < az || oz > bz) return false;
+                z1 = -Double.MAX_VALUE;
+                z2 = Double.MAX_VALUE;
+            } else {
+                z1 = (az - oz) / dz;
+                z2 = (bz - oz) / dz;
+                if (z1 > z2) { double s = z1; z1 = z2; z2 = s; }
+            }
             double low = Math.max(0.025D, Math.max(x1, Math.max(y1, z1)));
             double high = Math.min(0.975D, Math.min(x2, Math.min(y2, z2)));
             return high >= low;
@@ -336,7 +378,9 @@ public final class ClientRuntime {
         LinkedHashMap<String, Integer> map = WIDTHS.get(font);
         if (map == null) {
             map = new LinkedHashMap<String, Integer>(96, 0.75F, true) {
-                protected boolean removeEldestEntry(Map.Entry<String, Integer> entry) { return size() > 512; }
+                protected boolean removeEldestEntry(Map.Entry<String, Integer> entry) {
+                    return size() > 512;
+                }
             };
             WIDTHS.put(font, map);
         }
@@ -357,7 +401,7 @@ public final class ClientRuntime {
             "Culling: " + (culling ? "on" : "off") + " | hidden decisions: " + HIDDEN.get(),
             "Particles: " + (particles ? "on" : "off") + " | cap/tick: " + particleCap + " | suppressed: " + SUPPRESSED.get(),
             "HUD cache: " + (hud ? "on" : "off") + " | strings: " + widthCacheSize(),
-            "Fast math: " + (fastMath ? "on" : "off") + " | async chat parses: " + CHAT_PARSED.get() + " (last words: " + CHAT_LAST_WORDS + ")
+            "Fast math: " + (fastMath ? "on" : "off") + " | async chat parses: " + CHAT_PARSED.get() + " (last words: " + CHAT_LAST_WORDS + ")"
         };
     }
 
@@ -375,4 +419,3 @@ public final class ClientRuntime {
         }
     }
 }
-
