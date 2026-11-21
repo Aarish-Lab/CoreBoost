@@ -11,7 +11,6 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -145,7 +144,7 @@ public final class ClientRuntime {
             if (tile == null || tile.isInvalid()) {
                 continue;
             }
-            if (tile instanceof TileEntityChest || tile instanceof TileEntityBed) {
+            if (tile instanceof TileEntityChest) {
                 BlockPos pos = tile.getPos();
                 if (pos != null) {
                     tiles.add(new TileSample(pos.toLong(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
