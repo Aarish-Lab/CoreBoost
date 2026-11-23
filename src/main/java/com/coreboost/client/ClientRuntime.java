@@ -297,7 +297,17 @@ public final class ClientRuntime {
                 + CHAT_PARSED.get() + " (last words: " + CHAT_LAST_WORDS + ")");
         return lines;
     }
-
+public static void setOption(String key, boolean value) {
+    if ("culling".equals(key)) {
+        culling = value;
+    } else if ("particles".equals(key)) {
+        particles = value;
+    } else if ("hud".equals(key)) {
+        hud = value;
+    } else if ("fastmath".equals(key) || "fastMath".equals(key)) {
+        fastMath = value;
+    }
+}
     public static boolean toggle(String key) {
         boolean value;
         if ("culling".equals(key)) {
